@@ -8,7 +8,5 @@ const schema = mongoose.Schema({
     status: {type: Boolean, required: true},
     userId: {type: String, required: true}
 });
-
 const taskModel = mongoose.model("tasks",schema);
-
 module.exports = taskModel;
