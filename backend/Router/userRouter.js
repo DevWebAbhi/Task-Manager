@@ -17,10 +17,12 @@ const userRouter = express.Router();
 userRouter.post("/login",async(req,res)=>{
     const {email,password} = req.body;
      try {
-        const check = await userModel.findOne({email,password});
-        if(check){
+        
+        const check = await userModel.findOne({email});
+        const match = await bcrypt.compare(password, check.password);
+        if(check && match){
         const token = jwt.sign({ userId:check.id }, JWT_PASSWORD);
-        return res.status(200).send({message:"sucess",token:token});
+        return res.status(200).send({message:"successfull",token:token,userName:check.userName});
         }else{
             return res.status(401).send({message:"unauthorized access"});
         }
@@ -42,7 +44,7 @@ userRouter.post("/signup",async(req,res)=>{
             });
             await setUser.save();
             const token =jwt.sign({ userId:setUser.id }, JWT_PASSWORD);
-            return res.status(200).send({message:"sucess",token:token});
+            return res.status(200).send({message:"successfull",token:token,userName:setUser.userName});
         }else{
             return res.status(401).send({message:"invalid email"});
         }

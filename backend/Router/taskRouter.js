@@ -6,8 +6,8 @@ const taskRouter = express.Router();
 
 taskRouter.get("/tasks", async (req, res) => {
     const {id} = req.body;
-    const { page = 1, startDate, endDate, status } = req.query;
-    const limit = 6;
+    const { page = 1, startDate, endDate, status,q } = req.query;
+    const limit = 8;
     const skip = (page - 1) * limit;
     const query = {userId:id};
     if (startDate && endDate) {
@@ -16,13 +16,17 @@ taskRouter.get("/tasks", async (req, res) => {
             $lte: new Date(endDate)
         };
     }
+    if(q){
+        query["title"]=q;
+    }
     if (status === "completed" || status === "pending") {
         query.status = status === "completed";
     }
-    console.log(query)
+    
     try {
+        const totalCount = await taskModel.countDocuments(query);
         const tasks = await taskModel.find(query).skip(skip).limit(limit);
-        return res.status(200).send({message:"successfull",tasks:tasks,page:tasks.length>6?tasks.length/limit:1});
+        return res.status(200).send({message:"successfull",tasks:tasks,page:totalCount>limit?Math.ceil(totalCount/limit):1});
     } catch (error) {
         return res.status(500).send({ message: "internal server error" });
     }
@@ -30,6 +34,7 @@ taskRouter.get("/tasks", async (req, res) => {
 
 taskRouter.post("/post",async(req,res)=>{
     const {id,title,description,status} = req.body;
+    console.log(id,title,description,status)
     try {
         const dateTime=new Date();
         console.log(dateTime)

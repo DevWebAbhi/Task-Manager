@@ -1,5 +1,7 @@
 const express = require("express");
 
+const cors = require('cors');
+
 const app=express();
 
 app.use(express.json());
@@ -7,6 +9,13 @@ app.use(express.json());
 const dotenv=require("dotenv");
 
 dotenv.config();
+
+const CORS_ORIGIN = process.env.CORS_ORIGIN;
+
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true 
+}));
 
 const jwt = require('jsonwebtoken');
 

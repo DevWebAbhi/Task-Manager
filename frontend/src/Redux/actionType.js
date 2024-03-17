@@ -1,0 +1,17 @@
+export const SET_LOGIN = "SET_LOGIN";
+export const SET_DATA = "SET_DATA";
+export const SET_USER_NAME = "SET_USER_NAME";
+export const SET_EMAIL="SET_EMAIL";
+export const SET_PASSWORD="SET_PASSWORD";
+export const SET_LOADING="SET_LOADING";
+export const SET_URL = "SET_URL";
+export const SET_ERROR="SET_ERROR";
+export const SET_TITLE="SET_TITLE";
+export const SET_DESCRIPTION="SET_DESCRIPTION";
+export const SET_TASK_STATUS="SET_TASK_STATUS";
+export const SET_MODEL_ADD="SET_MODEL_ADD";
+export const SET_MODEL_LOADING="SET_MODEL_LOADING";
+export const SET_TASK_ID="SET_TASK_ID";
+export const SET_PAGES="SET_PAGES";
+export const SET_CURRENT_PAGE="SET_CURRENT_PAGE";
+export const SET_NAME="SET_NAME";
