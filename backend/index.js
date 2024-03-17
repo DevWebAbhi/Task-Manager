@@ -13,7 +13,7 @@ dotenv.config();
 const CORS_ORIGIN = process.env.CORS_ORIGIN;
 
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: CORS_ORIGIN,
     credentials: true 
 }));
 
