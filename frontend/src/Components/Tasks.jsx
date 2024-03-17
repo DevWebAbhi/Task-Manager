@@ -205,15 +205,14 @@ const Tasks = () => {
 
   return (
     <Box
-    height="100vh"
     display="flex"
     margin="auto"
     background="#D6EAF8"
+    padding={"2rem 0"}
     >
         <Box 
         width="95%"
         background="white"
-        height="90vh"
         borderRadius="2rem"
         margin="auto"
         display="flex"
@@ -305,7 +304,7 @@ const Tasks = () => {
                        selector.data.map((e, idx) => {
                         return <DataCard key={idx} idx={idx + 1} handleReset={handleReset} dataEdit={dataEdit} data={e} />
                     }):<Box height={"50vh"} maxH={"30rem"}>
-                            <Heading textAlign={"center"}>No Task Added</Heading>
+                            <Heading textAlign={"center"}>No Task</Heading>
                     </Box>
                     }
                 </Box>:
@@ -328,11 +327,7 @@ const Tasks = () => {
                     <Skeleton width={isSmallerThan475?"10rem":"15rem"} height={"15rem"} borderRadius={"1rem"}/>
                 </Box>
                     :<Box height={"50vh"} maxH={"30rem"}><Heading textAlign={"center"}>{
-                        toast({
-                            title: `Something went wrong`,
-                            position: "top-right",
-                            isClosable: true,
-                          })
+                        "Error"
                     }</Heading></Box>
                 }
                 <Box  margin={"auto"} marginTop={"1rem"}  >
