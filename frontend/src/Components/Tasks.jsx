@@ -36,6 +36,7 @@ const Tasks = () => {
     const [isSmallerThan1050] = useMediaQuery('(max-width: 1050px)');
     const [isSmallerThan750] = useMediaQuery('(max-width: 750px)');
     const [isSmallerThan500] = useMediaQuery('(max-width: 500px)');
+    const [isSmallerThan475] = useMediaQuery('(max-width: 475px)');
     
     const navigate=useNavigate();
     const selector = useSelector(store=>store);
@@ -290,7 +291,7 @@ const Tasks = () => {
                 {
                     !selector.error?
                     !selector.loading?
-                    <Box marginTop={"2rem"} maxH={"30rem"}  display="grid" gridGap={"2rem"} gridTemplateColumns={!isSmallerThan1350?"repeat(4, 1fr)":!isSmallerThan1050?"repeat(3,1fr)":!isSmallerThan750?"repeat(2,1fr)":"repeat(1,fr)"} height={"50vh"} overflowY={"auto"}
+                    <Box marginTop={"2rem"}   display="grid" gridGap={"2rem"} gridTemplateColumns={!isSmallerThan1350?"repeat(4, 1fr)":!isSmallerThan1050?"repeat(3,1fr)":!isSmallerThan750?"repeat(2,1fr)":"repeat(1,fr)"}  
                 sx={
                     { 
                    '::-webkit-scrollbar':{
@@ -316,15 +317,15 @@ const Tasks = () => {
                       }
                    }
                 }
-                marginTop={"2rem"} maxH={"30rem"} display="grid" gridGap={"2rem"} gridTemplateColumns={"repeat(4, 1fr)"} height={"50vh"} overflowY={"auto"}>
-                    <Skeleton width={"15rem"} height={"15rem"} borderRadius={"1rem"}/>
-                    <Skeleton width={"15rem"} height={"15rem"} borderRadius={"1rem"}/>
-                    <Skeleton width={"15rem"} height={"15rem"} borderRadius={"1rem"}/>
-                    <Skeleton width={"15rem"} height={"15rem"} borderRadius={"1rem"}/>
-                    <Skeleton width={"15rem"} height={"15rem"} borderRadius={"1rem"}/>
-                    <Skeleton width={"15rem"} height={"15rem"} borderRadius={"1rem"}/>
-                    <Skeleton width={"15rem"} height={"15rem"} borderRadius={"1rem"}/>
-                    <Skeleton width={"15rem"} height={"15rem"} borderRadius={"1rem"}/>
+                marginTop={"2rem"}  display="grid" gridGap={"2rem"} gridTemplateColumns={!isSmallerThan1350?"repeat(4, 1fr)":!isSmallerThan1050?"repeat(3,1fr)":!isSmallerThan750?"repeat(2,1fr)":"repeat(1,fr)"}  >
+                    <Skeleton width={isSmallerThan475?"10rem":"15rem"} height={"15rem"} borderRadius={"1rem"}/>
+                    <Skeleton width={isSmallerThan475?"10rem":"15rem"} height={"15rem"} borderRadius={"1rem"}/>
+                    <Skeleton width={isSmallerThan475?"10rem":"15rem"} height={"15rem"} borderRadius={"1rem"}/>
+                    <Skeleton width={isSmallerThan475?"10rem":"15rem"} height={"15rem"} borderRadius={"1rem"}/>
+                    <Skeleton width={isSmallerThan475?"10rem":"15rem"} height={"15rem"} borderRadius={"1rem"}/>
+                    <Skeleton width={isSmallerThan475?"10rem":"15rem"} height={"15rem"} borderRadius={"1rem"}/>
+                    <Skeleton width={isSmallerThan475?"10rem":"15rem"} height={"15rem"} borderRadius={"1rem"}/>
+                    <Skeleton width={isSmallerThan475?"10rem":"15rem"} height={"15rem"} borderRadius={"1rem"}/>
                 </Box>
                     :<Box height={"50vh"} maxH={"30rem"}><Heading textAlign={"center"}>{
                         toast({
