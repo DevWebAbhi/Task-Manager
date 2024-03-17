@@ -13,7 +13,7 @@ dotenv.config();
 const CORS_ORIGIN = process.env.CORS_ORIGIN;
 
 app.use(cors({
-    origin: CORS_ORIGIN,
+    origin: "https://task-manager-mu-ten.vercel.app",
     credentials: true 
 }));
 
