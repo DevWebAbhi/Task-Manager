@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import {useNavigate} from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { SET_EMAIL, SET_LOADING, SET_LOGIN, SET_PASSWORD, SET_USER_NAME } from '../Redux/actionType';
+import { SET_DATA, SET_EMAIL, SET_LOADING, SET_LOGIN, SET_PASSWORD, SET_USER_NAME } from '../Redux/actionType';
 import axios from "axios";
 const Authentication = () => {
   const selector = useSelector(store=>store);
@@ -127,6 +127,7 @@ const Authentication = () => {
     dispatch({type:SET_USER_NAME,payload:""});
     dispatch({type:SET_EMAIL,payload:""});
     dispatch({type:SET_PASSWORD,payload:""})
+    dispatch({type:SET_DATA,payload:[]});
     if (storedToken) {
       const token = JSON.parse(storedToken);
       if (token.token) {
