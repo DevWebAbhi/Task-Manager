@@ -1,7 +1,5 @@
 import { SET_DATA, SET_ERROR, SET_LOADING, SET_PAGES } from "./actionType";
-import axios from "axios";
 import axiosInstance from "../axiosInstance";
-const REACT_APP_BACKEND_URL=process.env.REACT_APP_BACKEND_URL;
 export const getTasks = (url)=>async(dispatch)=>{
     try {
         dispatch({type:SET_ERROR,payload:false});
