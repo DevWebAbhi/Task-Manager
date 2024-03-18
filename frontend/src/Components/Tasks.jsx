@@ -230,7 +230,7 @@ const Tasks = () => {
   function handleLogout() {
     localStorage.setItem(
       "TASK-MANAGER-AUTH-TOKEN",
-      JSON.stringify({ notoken: "notoken" })
+      JSON.stringify({  })
     );
     navigate("/");
   }
