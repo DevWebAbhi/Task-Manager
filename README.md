@@ -38,7 +38,8 @@ TaskMaster is a versatile task management application designed to help individua
 - **Responsive Ror Multiple Screens**
 ### Folder Structure
 
-/```frontend/
+```
+frontend/
 │
 ├── src/
 │ ├── Components/
@@ -48,6 +49,7 @@ TaskMaster is a versatile task management application designed to help individua
 │ └── ...
 │
 └── README.md
+```
 
 
 
@@ -62,8 +64,8 @@ TaskMaster is a versatile task management application designed to help individua
 - **Email Validate**: Library for validating email addresses.
 
 ### Folder Structure
-
-/```backend/
+```
+backend/
 │
 │
 │
@@ -75,7 +77,7 @@ TaskMaster is a versatile task management application designed to help individua
 │ ├── taskRoutes.js
 │ └── ...
 │__index.js
-
+```
 
 
 ## Usage
