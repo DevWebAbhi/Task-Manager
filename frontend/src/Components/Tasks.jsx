@@ -199,6 +199,7 @@ const Tasks = () => {
     }
     handleReset();
     console.log(name);
+    dispatch({type:SET_DATA,payload:[]})
     dispatch({ type: SET_NAME, payload: name.userName ? name.userName : "" });
     dispatch(getTasks(location.search));
   }, []);
@@ -349,11 +350,12 @@ const Tasks = () => {
               Tasks
             </Heading>
             <Heading
-              fontSize="2rem"
+              fontSize="1rem"
               marginTop={"2rem"}
-              fontWeight="500"
+              fontWeight="300"
               fontFamily="Poppins"
-              textAlign="start"
+              textAlign="end"
+              
             >
               {selector.name}
             </Heading>
