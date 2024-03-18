@@ -4,7 +4,7 @@ TaskMaster is a versatile task management application designed to help individua
 
 ## Features
 
--
+- **Multi User Experience**
 - **Task Creation**: Easily create new tasks with titles, descriptions, and status.
 - **Task Editing**: Update task details including title, description, and status as needed.
 - **Task Deletion**: Remove tasks from the list when they are no longer relevant or necessary.
