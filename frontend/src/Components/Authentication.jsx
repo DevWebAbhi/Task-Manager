@@ -98,6 +98,7 @@ const Authentication = () => {
                 navigate("/tasks");
             }
             dispatch({type:SET_LOADING,payload:false});
+            window.location.reload();
         } catch (error) {
             toast({
                 title: `Invalid user or Network error`,
