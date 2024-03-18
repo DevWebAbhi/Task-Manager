@@ -60,7 +60,7 @@ const Authentication = () => {
                     isClosable: true,
                   })
             }else{
-                localStorage.setItem("TASK-MANAGER-AUTH-TOKEN",JSON.stringify({token:authenticate.data.token,userName:authenticate.userName}));
+                localStorage.setItem("TASK-MANAGER-AUTH-TOKEN",JSON.stringify({token:authenticate.data.token,userName:authenticate.data.userName}));
                 navigate("/tasks");
             }
             dispatch({type:SET_LOADING,payload:false});
@@ -92,7 +92,7 @@ const Authentication = () => {
                     isClosable: true,
                   })
             }else{
-                localStorage.setItem("TASK-MANAGER-AUTH-TOKEN",JSON.stringify({token:authenticate.data.token,userName:authenticate.userName}));
+                localStorage.setItem("TASK-MANAGER-AUTH-TOKEN",JSON.stringify({token:authenticate.data.token,userName:authenticate.data.userName}));
                 navigate("/tasks");
             }
             dispatch({type:SET_LOADING,payload:false});
