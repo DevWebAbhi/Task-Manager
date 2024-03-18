@@ -34,7 +34,7 @@ TaskMaster is a versatile task management application designed to help individua
 - **React Router DOM**: Library for handling routing in React applications.
 - **Local Storage**: Browser storage for storing user data locally.
 - **Responsive Pagination**: Pagination component for navigating through lists of tasks on different devices.
-
+- **useSearchParams**
 ### Folder Structure
 
 ```frontend/

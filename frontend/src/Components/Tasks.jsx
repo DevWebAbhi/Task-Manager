@@ -94,6 +94,7 @@ const Tasks = () => {
       });
       closeModel();
       handleReset();
+      window.location.reload();
     } catch (error) {
       toast({
         title: `Something went wrong`,
@@ -131,6 +132,7 @@ const Tasks = () => {
       });
       closeModel();
       handleReset();
+      window.location.reload();
     } catch (error) {
       toast({
         title: `Something went wrong`,
