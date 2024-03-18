@@ -192,11 +192,13 @@ const Tasks = () => {
 
   useEffect(() => {
     const name = JSON.parse(localStorage.getItem("TASK-MANAGER-AUTH-TOKEN"));
+    dispatch({type:SET_DATA,payload:[]});
     if (name.token == undefined) {
       navigate("/");
     }
     console.log(name);
     dispatch({ type: SET_NAME, payload: name.userName ? name.userName : "" });
+    dispatch(getTasks(location.search));
   }, []);
 
   useEffect(() => {
