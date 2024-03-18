@@ -38,7 +38,7 @@ TaskMaster is a versatile task management application designed to help individua
 - **Responsive Ror Multiple Screens**
 ### Folder Structure
 
-frontend/
+'''frontend/
 │
 ├── src/
 │ ├── Components/
@@ -63,7 +63,7 @@ frontend/
 
 ### Folder Structure
 
-backend/
+'''backend/
 │
 │
 │
