@@ -192,6 +192,7 @@ const Tasks = () => {
   }
 
   useEffect(() => {
+    window.location.reload();
     const name = JSON.parse(localStorage.getItem("TASK-MANAGER-AUTH-TOKEN"));
     handleReset();
     if (name.token == undefined) {
