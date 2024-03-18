@@ -35,7 +35,7 @@ TaskMaster is a versatile task management application designed to help individua
 - **Local Storage**: Browser storage for storing user data locally.
 - **Responsive Pagination**: Pagination component for navigating through lists of tasks on different devices.
 - **useSearchParams**
-- **Responsive Ror Multiple Screens**
+- **Responsive For Multiple Screens**
 ### Folder Structure
 
 ```
