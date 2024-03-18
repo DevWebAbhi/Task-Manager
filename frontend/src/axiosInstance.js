@@ -13,8 +13,6 @@ if (storedToken) {
   const token = JSON.parse(storedToken);
   if (token && token.token) {
     axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token.token}`;
-  }else{
-    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${""}`;
   }
 }
 

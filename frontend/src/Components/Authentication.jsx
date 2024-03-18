@@ -61,8 +61,7 @@ const Authentication = () => {
                   })
             }else{
                 localStorage.setItem("TASK-MANAGER-AUTH-TOKEN",JSON.stringify({token:authenticate.data.token,userName:authenticate.data.userName}));
-                dispatch({type:SET_DATA,payload:[]})
-                navigate("/tasks");
+                window.location.reload();
             }
             dispatch({type:SET_LOADING,payload:false});
         } catch (error) {
@@ -94,11 +93,10 @@ const Authentication = () => {
                   })
             }else{
                 localStorage.setItem("TASK-MANAGER-AUTH-TOKEN",JSON.stringify({token:authenticate.data.token,userName:authenticate.data.userName}));
-                dispatch({type:SET_DATA,payload:[]})
-                navigate("/tasks");
+                window.location.reload();
             }
             dispatch({type:SET_LOADING,payload:false});
-            window.location.reload();
+            
         } catch (error) {
             toast({
                 title: `Invalid user or Network error`,
