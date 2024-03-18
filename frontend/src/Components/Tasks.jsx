@@ -200,6 +200,7 @@ const Tasks = () => {
     dispatch({ type: SET_NAME, payload: name.userName ? name.userName : "" });
     dispatch(getTasks(location.search));
   }, []);
+  
 
   useEffect(() => {
     setSearchParams({
