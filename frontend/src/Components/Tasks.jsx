@@ -193,7 +193,7 @@ const Tasks = () => {
 
   useEffect(() => {
     const name = JSON.parse(localStorage.getItem("TASK-MANAGER-AUTH-TOKEN"));
-    dispatch({type:SET_DATA,payload:[]});
+    handleReset();
     if (name.token == undefined) {
       navigate("/");
     }
@@ -364,6 +364,7 @@ const Tasks = () => {
                 marginTop={"2rem"}
                 display="grid"
                 gridGap={"2rem"}
+                minH={"30rem"}
                 gridTemplateColumns={
                   !isSmallerThan1350
                     ? "repeat(4, 1fr)"
