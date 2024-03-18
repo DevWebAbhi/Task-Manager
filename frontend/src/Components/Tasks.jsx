@@ -37,6 +37,7 @@ import {
   SET_TASK_ID,
   SET_CURRENT_PAGE,
   SET_NAME,
+  SET_DATA
 } from "../Redux/actionType";
 import DataCard from "./DataCard";
 import axiosInstance from "../axiosInstance";
@@ -200,7 +201,7 @@ const Tasks = () => {
     dispatch({ type: SET_NAME, payload: name.userName ? name.userName : "" });
     dispatch(getTasks(location.search));
   }, []);
-  
+
 
   useEffect(() => {
     setSearchParams({
