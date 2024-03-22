@@ -48,7 +48,7 @@ app.get("/verify",async(req,res)=>{
         const tokenDecoded = jwt.verify(token, JWT_PASSWORD);
         console.log(tokenDecoded)
         if(tokenDecoded){
-        const verifyUser = await userModel.findOneAndUpdate({email:tokenDecoded.token},{verified:true});
+        const verifyUser = await userModel.findOneAndUpdate({email:tokenDecoded.email},{verified:true});
         console.log(token)
         if(verifyUser){
             res.render('index', { message: 'Verifaction successfull' });
