@@ -28,7 +28,7 @@ const transporter = nodemailer.createTransport({
     const token = generateToken(email);
   
     const mailOptions = {
-      from: 'abhishektiwaritaskmanager@gmail.com.com',
+      from: EMAIL,
       to: email, 
       subject: 'Email Verification',
       text: `Click the following link to verify your email: https://task-manager-0ygk.onrender.com/verify/?token=${token}` // Email body with verification link
