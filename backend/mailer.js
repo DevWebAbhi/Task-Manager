@@ -6,8 +6,6 @@ const EMAIL = process.env.EMAIL;
 
 const PASSWORD = process.env.PASSWORD;
 
-console.log(EMAIL,PASSWORD)
-
 const JWT_PASSWORD = process.env.JWT_PASSWORD;
 
 const transporter = nodemailer.createTransport({
