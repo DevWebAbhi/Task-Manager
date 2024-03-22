@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Box,
   Heading,
@@ -19,10 +19,18 @@ import {
   useToast,
   Spinner,
   Skeleton,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
 } from "@chakra-ui/react";
+
 import ResponsivePagination from "react-responsive-pagination";
 import "react-responsive-pagination/themes/classic.css";
-import { AddIcon, SearchIcon } from "@chakra-ui/icons";
+import { AddIcon, SearchIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { getTasks } from "../Redux/action";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -37,18 +45,12 @@ import {
   SET_TASK_ID,
   SET_CURRENT_PAGE,
   SET_NAME,
-  SET_DATA
+  SET_DATA,
 } from "../Redux/actionType";
 import DataCard from "./DataCard";
-import axiosInstance from "../axiosInstance";
+import axiosInstance, { configureTokenAxios } from "../axiosInstance";
 
 const Tasks = () => {
-  const [isSmallerThan1350] = useMediaQuery("(max-width: 1350px)");
-  const [isSmallerThan1050] = useMediaQuery("(max-width: 1050px)");
-  const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
-  const [isSmallerThan500] = useMediaQuery("(max-width: 500px)");
-  const [isSmallerThan475] = useMediaQuery("(max-width: 475px)");
-
   const navigate = useNavigate();
   const selector = useSelector((store) => store);
   const dispatch = useDispatch();
@@ -59,7 +61,63 @@ const Tasks = () => {
     onOpen: openModel,
     onClose: closeModel,
   } = useDisclosure();
+  const {
+    isOpen: isDrawerOpen,
+    onOpen: openDrawer,
+    onClose: closeDrawer,
+  } = useDisclosure();
+
   const toast = useToast();
+
+  const dataInputRef1=useRef(null);
+  const dataInputRef2=useRef(null);
+
+  //handling different screen sizes
+
+  const [isSmallerThan1190] = useMediaQuery("(max-width: 1190px)");
+  const [isSmallerThan1050] = useMediaQuery("(max-width: 1050px)");
+  const [isSmallerThan850] = useMediaQuery("(max-width: 850px)");
+  const [isSmallerThan500] = useMediaQuery("(max-width: 500px)");
+  const [isSmallerThan475] = useMediaQuery("(max-width: 475px)");
+  const [isSmallerThan400] = useMediaQuery("(max-width: 400px)");
+
+  // if no token present it will redirect to login page
+
+  useEffect(() => {
+    const name = JSON.parse(localStorage.getItem("TASK-MANAGER-AUTH-TOKEN"));
+    if (!name || !name.token) {
+      navigate("/");
+      return;
+    }
+    configureTokenAxios();
+    dispatch(getTasks(location.search));
+    dispatch({type:SET_NAME,payload:name.userName});
+  }, []);
+
+  useEffect(() => {
+    setSearchParams({
+      page: selector.currentPage != 0 ? selector.currentPage : 1,
+    });
+    if (selector.currentPage == 0) {
+      dispatch({ type: SET_CURRENT_PAGE, payload: 1 });
+      dispatch(getTasks(location.search));
+    }
+  }, [selector.currentPage]);
+
+  useEffect(() => {
+    if (!selector.loading) {
+      dispatch(getTasks(location.search));
+    }
+  }, [location.search]);
+
+  useEffect(() => {
+    if (selector.addModel) {
+      dispatch({ type: SET_TASK_STATUS, payload: false });
+      dispatch({ type: SET_DESCRIPTION, payload: "" });
+      dispatch({ type: SET_TITLE, payload: "" });
+    }
+  }, [isModelOpen]);
+
   async function handleAddTask() {
     try {
       if (selector.title == "" || selector.description == "") {
@@ -94,7 +152,6 @@ const Tasks = () => {
       });
       closeModel();
       handleReset();
-      window.location.reload();
     } catch (error) {
       toast({
         title: `Something went wrong`,
@@ -132,7 +189,6 @@ const Tasks = () => {
       });
       closeModel();
       handleReset();
-      window.location.reload();
     } catch (error) {
       toast({
         title: `Something went wrong`,
@@ -151,7 +207,6 @@ const Tasks = () => {
     try {
       console.log(dataId, idx);
       const taskData = selector.data[idx - 1];
-
       dispatch({ type: SET_TITLE, payload: taskData.title });
       dispatch({ type: SET_MODEL_ADD, payload: false });
       dispatch({ type: SET_TASK_STATUS, payload: taskData.status });
@@ -166,6 +221,8 @@ const Tasks = () => {
       });
     }
   }
+
+  //handling filter buttons pending or completed
 
   async function handleFilterButtons(e) {
     dispatch({ type: SET_CURRENT_PAGE, payload: 1 });
@@ -184,8 +241,14 @@ const Tasks = () => {
     }
   }
 
+
+
+  //handling reset button
+
   function handleReset() {
     dispatch({ type: SET_CURRENT_PAGE, payload: 0 });
+    dataInputRef1.current.value=null;
+    dataInputRef2.current.value=null;
     setSearchParams(() => {
       const params = new URLSearchParams();
       params.set("page", "1");
@@ -193,48 +256,10 @@ const Tasks = () => {
     });
   }
 
-  useEffect(() => {
-    const name = JSON.parse(localStorage.getItem("TASK-MANAGER-AUTH-TOKEN"));
-    if (!name || !name.token) {
-      navigate("/");
-      return; 
-    }
-    handleReset();
-    console.log(name);
-    dispatch({type:SET_DATA,payload:[]})
-    dispatch({ type: SET_NAME, payload: name.userName ? name.userName : "" });
-    dispatch(getTasks(location.search));
-  }, []);
-
-  useEffect(() => {
-    setSearchParams({
-      page: selector.currentPage != 0 ? selector.currentPage : 1,
-    });
-    if (selector.currentPage == 0) {
-      dispatch({ type: SET_CURRENT_PAGE, payload: 1 });
-      dispatch(getTasks(location.search));
-    }
-  }, [selector.currentPage]);
-
-  useEffect(() => {
-    if(!selector.loading){
-        dispatch(getTasks(location.search));
-    }
-  }, [location.search]);
-
-  useEffect(() => {
-    if (selector.addModel) {
-      dispatch({ type: SET_TASK_STATUS, payload: false });
-      dispatch({ type: SET_DESCRIPTION, payload: "" });
-      dispatch({ type: SET_TITLE, payload: "" });
-    }
-  }, [isModelOpen]);
+  // handling logout
 
   function handleLogout() {
-    localStorage.setItem(
-      "TASK-MANAGER-AUTH-TOKEN",
-      JSON.stringify({  })
-    );
+    localStorage.setItem("TASK-MANAGER-AUTH-TOKEN", JSON.stringify({}));
     navigate("/");
   }
 
@@ -247,9 +272,126 @@ const Tasks = () => {
         margin="auto"
         display="flex"
       >
+        {isSmallerThan500 ? (
+          <>
+            <Button
+              width={"3rem"}
+              paddingTop={"2rem"}
+              background={"transparent"}
+              border={"none"}
+              colorScheme="blue"
+              onClick={openDrawer}
+            >
+              <HamburgerIcon color={"black"} boxSize={"8"} />
+            </Button>
+            <Drawer
+              placement={"left"}
+              onClose={closeDrawer}
+              isOpen={isDrawerOpen}
+            >
+              <DrawerOverlay />
+
+              <DrawerContent>
+                <DrawerCloseButton />
+                <DrawerHeader borderBottomWidth="1px">
+                  <Heading fontSize={"medium"}>Task Manager</Heading>
+                </DrawerHeader>
+                <DrawerBody>
+                  <Button
+                    border="none"
+                    padding="1.5rem 1rem"
+                    borderRadius="50%"
+                    background="#17202A"
+                    display={"block"}
+                    margin={"auto"}
+                    marginTop="3rem"
+                    onClick={() => {
+                      openModel();
+                      dispatch({ type: SET_MODEL_ADD, payload: true });
+                    }}
+                  >
+                    <AddIcon marginTop={"-1.5rem"} color="white" />
+                  </Button>
+                  <Input placeholder="Select Date and Time" type="date"
+          fontSize={"small"} 
+          display={"block"}
+          margin={"auto"}
+          ref={dataInputRef1}
+          onChange={
+            (e)=>{
+              setSearchParams((prevSearchParams) => {
+                const params = new URLSearchParams(prevSearchParams);
+                params.set("startDate", e.target.value);
+                return params;
+              })
+            }
+          }
+          marginTop={"1.5rem"} width={isSmallerThan500 ? "6rem" : "7.9rem"} />
+          <Input placeholder="Select Date and Time" type="date"
+          fontSize={"small"} 
+          display={"block"}
+          margin={"auto"}
+          ref={dataInputRef2}
+          onChange={
+            (e)=>{
+              setSearchParams((prevSearchParams) => {
+                const params = new URLSearchParams(prevSearchParams);
+                params.set("endDate", e.target.value);
+                return params;
+              })
+            }
+          }
+          marginTop={"1.5rem"} width={isSmallerThan500 ? "6rem" : "7.9rem"} />
+                  <Button
+                    display={"block"}
+                    margin={"auto"}
+                    marginTop={"1.5rem"}
+                    width={isSmallerThan500 ? "6rem" : "7.9rem"}
+                    id="pending"
+                    onClick={handleFilterButtons}
+                  >
+                    Pending
+                  </Button>
+                  <Button
+                    display={"block"}
+                    margin={"auto"}
+                    marginTop={"1.5rem"}
+                    width={isSmallerThan500 ? "6rem" : "7.9rem"}
+                    id="completed"
+                    onClick={handleFilterButtons}
+                  >
+                    Done
+                  </Button>
+                  <Button
+                    display={"block"}
+                    margin={"auto"}
+                    marginTop={"1.5rem"}
+                    width={isSmallerThan500 ? "6rem" : "7.9rem"}
+                    id="reset"
+                    onClick={handleReset}
+                  >
+                    Reset
+                  </Button>
+                  <Button
+                    display={"block"}
+                    margin={"auto"}
+                    marginTop={"1.5rem"}
+                    width={isSmallerThan500 ? "6rem" : "7.9rem"}
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
+                </DrawerBody>
+              </DrawerContent>
+            </Drawer>
+          </>
+        ) : (
+          <></>
+        )}
         <Box
           width={"min-content"}
           borderRight="1px solid #D5D8DC"
+          display={!isSmallerThan500 ? "block" : "none"}
           borderWidth="thin"
           padding={"0.7rem"}
         >
@@ -267,6 +409,32 @@ const Tasks = () => {
           >
             <AddIcon color="white" />
           </Button>
+          <Input placeholder="Select Date and Time" type="date"
+          fontSize={"small"} 
+          ref={dataInputRef1}
+          onChange={
+            (e)=>{
+              setSearchParams((prevSearchParams) => {
+                const params = new URLSearchParams(prevSearchParams);
+                params.set("startDate", e.target.value);
+                return params;
+              })
+            }
+          }
+          marginTop={"1.5rem"} width={isSmallerThan500 ? "6rem" : "7.9rem"} />
+          <Input placeholder="Select Date and Time" type="date"
+          fontSize={"small"} 
+          ref={dataInputRef2}
+          onChange={
+            (e)=>{
+              setSearchParams((prevSearchParams) => {
+                const params = new URLSearchParams(prevSearchParams);
+                params.set("endDate", e.target.value);
+                return params;
+              })
+            }
+          }
+          marginTop={"1.5rem"} width={isSmallerThan500 ? "6rem" : "7.9rem"} />
           <Button
             display={"block"}
             margin={"auto"}
@@ -307,11 +475,14 @@ const Tasks = () => {
             Logout
           </Button>
         </Box>
-        <Box padding="1.5rem" width={"100%"}>
+        <Box
+          padding={!isSmallerThan400 ? "1.5rem" : "1.5rem 0.5rem 0.5rem 0.5rem"}
+          width={"100%"}
+        >
           <Box display="flex">
             <Box>
               <Input
-                height="2.4rem"
+                height="2.5rem"
                 borderColor="#D5D8DC"
                 borderWidth="thin"
                 borderRadius="0.5rem 0 0 0.5rem"
@@ -357,7 +528,6 @@ const Tasks = () => {
               fontWeight="300"
               fontFamily="Poppins"
               textAlign="end"
-              
             >
               {selector.name}
             </Heading>
@@ -370,13 +540,11 @@ const Tasks = () => {
                 gridGap={"2rem"}
                 minH={"30rem"}
                 gridTemplateColumns={
-                  !isSmallerThan1350
-                    ? "repeat(4, 1fr)"
-                    : !isSmallerThan1050
+                  !isSmallerThan1190
                     ? "repeat(3,1fr)"
-                    : !isSmallerThan750
+                    : !isSmallerThan850
                     ? "repeat(2,1fr)"
-                    : "repeat(1,fr)"
+                    : "repeat(1,1fr)"
                 }
                 sx={{
                   "::-webkit-scrollbar": {
@@ -390,9 +558,8 @@ const Tasks = () => {
                       <DataCard
                         key={idx}
                         idx={idx + 1}
-                        handleReset={handleReset}
                         dataEdit={dataEdit}
-                        data={e}
+                        Data={e}
                       />
                     );
                   })
@@ -413,53 +580,41 @@ const Tasks = () => {
                 display="grid"
                 gridGap={"2rem"}
                 gridTemplateColumns={
-                  !isSmallerThan1350
-                    ? "repeat(4, 1fr)"
-                    : !isSmallerThan1050
+                  !isSmallerThan1190
                     ? "repeat(3,1fr)"
-                    : !isSmallerThan750
+                    : !isSmallerThan850
                     ? "repeat(2,1fr)"
-                    : "repeat(1,fr)"
+                    : "repeat(1,1fr)"
                 }
               >
                 <Skeleton
-                  width={isSmallerThan475 ? "11rem" : "15rem"}
-                  height={"15rem"}
+                  width={isSmallerThan400 ? "12rem" : "17.9rem"}
+                  height={!isSmallerThan400 ? "17.9rem" : "20rem"}
                   borderRadius={"1rem"}
                 />
                 <Skeleton
-                  width={isSmallerThan475 ? "11rem" : "15rem"}
-                  height={"15rem"}
+                  width={isSmallerThan400 ? "12rem" : "17.9rem"}
+                  height={!isSmallerThan400 ? "17.9rem" : "20rem"}
                   borderRadius={"1rem"}
                 />
                 <Skeleton
-                  width={isSmallerThan475 ? "11rem" : "15rem"}
-                  height={"15rem"}
+                  width={isSmallerThan400 ? "12rem" : "17.9rem"}
+                  height={!isSmallerThan400 ? "17.9rem" : "20rem"}
                   borderRadius={"1rem"}
                 />
                 <Skeleton
-                  width={isSmallerThan475 ? "11rem" : "15rem"}
-                  height={"15rem"}
+                  width={isSmallerThan400 ? "12rem" : "17.9rem"}
+                  height={!isSmallerThan400 ? "17.9rem" : "20rem"}
                   borderRadius={"1rem"}
                 />
                 <Skeleton
-                  width={isSmallerThan475 ? "11rem" : "15rem"}
-                  height={"15rem"}
+                  width={isSmallerThan400 ? "12rem" : "17.9rem"}
+                  height={!isSmallerThan400 ? "17.9rem" : "20rem"}
                   borderRadius={"1rem"}
                 />
                 <Skeleton
-                  width={isSmallerThan475 ? "11rem" : "15rem"}
-                  height={"15rem"}
-                  borderRadius={"1rem"}
-                />
-                <Skeleton
-                  width={isSmallerThan475 ? "11rem" : "15rem"}
-                  height={"15rem"}
-                  borderRadius={"1rem"}
-                />
-                <Skeleton
-                  width={isSmallerThan475 ? "11rem" : "15rem"}
-                  height={"15rem"}
+                  width={isSmallerThan400 ? "12rem" : "17.9rem"}
+                  height={!isSmallerThan400 ? "17.9rem" : "20rem"}
                   borderRadius={"1rem"}
                 />
               </Box>

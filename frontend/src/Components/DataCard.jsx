@@ -11,30 +11,32 @@ import {
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import axiosInstance from "../axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_MODEL_LOADING } from "../Redux/actionType";
-import { useNavigate } from "react-router-dom";
+import { SET_DATA, SET_MODEL_LOADING } from "../Redux/actionType";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useMemo } from "react";
+import {timeCodes, monthCodes, colorCodes} from "../codes"
 
-const colorCodes = {
-  one: "#F1C40F",
-  two: "#F39C12 ",
-  three: "#E67E22",
-  four: "#8E44AD",
-  five: "#C0392B",
-  six: "#3498DB",
-};
-
-const DataCard = ({ data, idx, dataEdit, handleReset }) => {
-  const [isSmallerThan475] = useMediaQuery("(max-width: 475px)");
+const DataCard = ({ Data, idx, dataEdit }) => {
+  const [isSmallerThan400] = useMediaQuery("(max-width: 400px)");
   const toast = useToast();
   const selector = useSelector((store) => store);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const loaction = useLocation();
 
+  const data = useMemo(()=>Data,[Data.status,Data.title,Data.description,Data.updatedAt]);
+
+  useEffect(()=>{
+    console.log(data.updatedAt)
+  },[])
+  
   async function handleDelete(id) {
     try {
       dispatch({ type: SET_MODEL_LOADING, payload: true });
       const deleteTask = await axiosInstance.delete(`task/delete/${id}`);
-      handleReset();
+      const tempElementData=selector.data;
+      tempElementData.splice(idx-1,1);
+      dispatch({type:SET_DATA,payload:tempElementData});
+
       toast({
         title: `Deleted Sucessfully`,
         position: "top-right",
@@ -55,10 +57,10 @@ const DataCard = ({ data, idx, dataEdit, handleReset }) => {
   return (
     <Box
       borderRadius="1rem"
-      width={isSmallerThan475 ? "11rem" : "15rem"}
+      width={isSmallerThan400 ? "12rem" : "17.9rem"}
       padding={"1rem"}
       boxSizing="border-box"
-      height="15rem"
+      height={!isSmallerThan400 ? "17.9rem":"20rem"}
       background={
         idx % 6 == 0
           ? colorCodes.six
@@ -78,23 +80,23 @@ const DataCard = ({ data, idx, dataEdit, handleReset }) => {
         textAlign="start"
         fontFamily="Poppins"
         fontSize="medium"
+        height={"1.32rem"}
+        overflowY={"hidden"}
       >
         {data.title}
       </Heading>
+      <Box height={"5.5rem"} overflowY={"hidden"}>
       <Text
         color="#212F3D"
         marginTop={"1rem"}
         textAlign="start"
         fontFamily="Poppins"
-        width={"8rem"}
-        height={"4.5rem"}
-        maxHeight="6rem"
-        overflow="hidden"
       >
         {data.description}
       </Text>
+      </Box>
       <Box
-        display={!isSmallerThan475 ? "flex" : "block"}
+        display={!isSmallerThan400 ? "flex" : "block"}
         justifyContent={"space-between"}
       >
         <Box display={"flex"}>
@@ -111,15 +113,14 @@ const DataCard = ({ data, idx, dataEdit, handleReset }) => {
             {data.status ? "Completed" : "Pending"}
           </Text>
         </Box>
-
         <Box
           width={"max-content"}
-          display={isSmallerThan475 ? "flex" : "block"}
-          marginTop={!isSmallerThan475 ? "0" : "1rem"}
+          display={isSmallerThan400 ? "flex" : "block"}
+          marginTop={!isSmallerThan400 ? "0" : "1rem"}
         >
           <Box>
             <Button
-              marginRight={!isSmallerThan475 ? "0" : "1rem"}
+              marginRight={!isSmallerThan400 ? "0" : "1rem"}
               marginBottom={"1rem"}
               padding={
                 !selector.modelLoading ? "1.5rem 1rem" : "1.35rem 0.7rem"
@@ -141,6 +142,7 @@ const DataCard = ({ data, idx, dataEdit, handleReset }) => {
               padding={"1.5rem 1rem"}
               borderRadius={"50%"}
               background="#17202A"
+              isDisabled={selector.modelLoading}
               onClick={() => dataEdit(data._id, idx)}
             >
               <EditIcon color="white" />
@@ -148,8 +150,12 @@ const DataCard = ({ data, idx, dataEdit, handleReset }) => {
           </Box>
         </Box>
       </Box>
+      <Box marginTop={!isSmallerThan400?"-4.5rem":"-0.8rem"}>
+      <Text fontSize={"smaller"} textAlign={"start"} fontFamily={"Poppins"}>{data.createdAt?"Created At: "+monthCodes[`month${Number(data.createdAt.substring(5,7))}`]+" "+data.createdAt.substring(8,10)+", "+data.createdAt.substring(2,4)+" "+timeCodes[`hour${Number(data.createdAt.substring(11,13))}`].split(" ")[0]+data.createdAt.substring(13,16)+" "+timeCodes[`hour${Number(data.createdAt.substring(11,13))}`].split(" ")[1]:""}</Text>
+      <Text fontSize={"smaller"} textAlign={"start"} fontFamily={"Poppins"}>{data.updatedAt?"Updated At: "+monthCodes[`month${Number(data.updatedAt.substring(5,7))}`]+" "+data.updatedAt.substring(8,10)+", "+data.updatedAt.substring(2,4)+" "+timeCodes[`hour${Number(data.updatedAt.substring(11,13))}`].split(" ")[0]+data.updatedAt.substring(13,16)+" "+timeCodes[`hour${Number(data.updatedAt.substring(11,13))}`].split(" ")[1]:""}</Text>
+      </Box>
     </Box>
   );
 };
-
+ 
 export default DataCard;

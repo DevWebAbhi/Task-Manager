@@ -6,6 +6,8 @@ const app=express();
 
 app.use(express.json());
 
+app.set('view engine', 'ejs');
+
 const dotenv=require("dotenv");
 
 dotenv.config();
@@ -38,6 +40,25 @@ app.get("/",(req,res)=>{
 });
 
 app.use("/user",userRouter);
+
+app.get("/verify",async(req,res)=>{
+    const {token} = req.query;
+    try {
+        const tokenDecoded = jwt.verify(token, JWT_PASSWORD);
+        if(tokenDecoded){
+        const verifyUser = await userModel.findOneAndUpdate({email:tokenDecoded},{verified:true});
+        if(verifyUser){
+            res.render('index', { message: 'Verifaction successfull' });
+        } else{
+            res.render('index', { message: 'Unauthorized Access' });
+        }
+        }else{
+            res.render('index', { message: 'Unauthorized Access' });
+        }
+    } catch (error) {
+        res.render('index', { message: 'Interanal Server Error' });
+    }
+});
 
 app.use("/task",authentication,taskRouter);
 

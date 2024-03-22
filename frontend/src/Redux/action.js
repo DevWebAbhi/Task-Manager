@@ -1,6 +1,7 @@
 import { SET_DATA, SET_ERROR, SET_LOADING, SET_PAGES } from "./actionType";
-import axiosInstance from "../axiosInstance";
+import axiosInstance, { configureTokenAxios } from "../axiosInstance";
 export const getTasks = (url)=>async(dispatch)=>{
+    configureTokenAxios();
     try {
         dispatch({type:SET_ERROR,payload:false});
         dispatch({type:SET_LOADING,payload:true});

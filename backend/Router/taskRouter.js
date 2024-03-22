@@ -15,6 +15,14 @@ taskRouter.get("/tasks", async (req, res) => {
             $gte: new Date(startDate),
             $lte: new Date(endDate)
         };
+    }else if(startDate){
+        query.createdAt = {
+            $gte: new Date(startDate),
+        };
+    }else if(endDate){
+        query.createdAt = {
+            $lte: new Date(endDate)
+        };
     }
     if(q){
         query["title"]=q;
@@ -41,8 +49,7 @@ taskRouter.post("/post",async(req,res)=>{
         const setTask = await taskModel({
             title,
             description,
-            createdAt: dateTime, 
-            updatedAt: "Not updated", 
+            createdAt: dateTime,
             status,
             userId: id
         });
