@@ -43,10 +43,13 @@ app.use("/user",userRouter);
 
 app.get("/verify",async(req,res)=>{
     const {token} = req.query;
+    console.log(token)
     try {
         const tokenDecoded = jwt.verify(token, JWT_PASSWORD);
+        console.log(token)
         if(tokenDecoded){
         const verifyUser = await userModel.findOneAndUpdate({email:tokenDecoded},{verified:true});
+        console.log(token)
         if(verifyUser){
             res.render('index', { message: 'Verifaction successfull' });
         } else{
