@@ -151,6 +151,7 @@ const DataCard = ({ Data, idx, dataEdit }) => {
         </Box>
       </Box>
       <Box marginTop={!isSmallerThan400?"-4.5rem":"-0.8rem"}>
+      <Text fontSize={"smaller"} textAlign={"start"} fontFamily={"Poppins"}>{data.deadline?"Deadline: "+monthCodes[`month${Number(data.deadline.substring(5,7))}`]+" "+data.deadline.substring(8,10)+", "+data.deadline.substring(2,4)+" "+timeCodes[`hour${Number(data.deadline.substring(11,13))}`].split(" ")[0]+data.deadline.substring(13,16)+" "+timeCodes[`hour${Number(data.deadline.substring(11,13))}`].split(" ")[1]:""}</Text>
       <Text fontSize={"smaller"} textAlign={"start"} fontFamily={"Poppins"}>{data.createdAt?"Created At: "+monthCodes[`month${Number(data.createdAt.substring(5,7))}`]+" "+data.createdAt.substring(8,10)+", "+data.createdAt.substring(2,4)+" "+timeCodes[`hour${Number(data.createdAt.substring(11,13))}`].split(" ")[0]+data.createdAt.substring(13,16)+" "+timeCodes[`hour${Number(data.createdAt.substring(11,13))}`].split(" ")[1]:""}</Text>
       <Text fontSize={"smaller"} textAlign={"start"} fontFamily={"Poppins"}>{data.updatedAt?"Updated At: "+monthCodes[`month${Number(data.updatedAt.substring(5,7))}`]+" "+data.updatedAt.substring(8,10)+", "+data.updatedAt.substring(2,4)+" "+timeCodes[`hour${Number(data.updatedAt.substring(11,13))}`].split(" ")[0]+data.updatedAt.substring(13,16)+" "+timeCodes[`hour${Number(data.updatedAt.substring(11,13))}`].split(" ")[1]:""}</Text>
       </Box>

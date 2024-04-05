@@ -1,4 +1,4 @@
-import { SET_DATA, SET_ERROR, SET_LOADING, SET_URL, SET_EMAIL, SET_LOGIN, SET_PASSWORD, SET_USER_NAME, SET_TITLE, SET_DESCRIPTION, SET_TASK_STATUS, SET_MODEL_ADD, SET_MODEL_LOADING, SET_TASK_ID, SET_PAGES, SET_CURRENT_PAGE, SET_NAME } from "./actionType";
+import { SET_DATA, SET_ERROR, SET_LOADING, SET_URL, SET_EMAIL, SET_LOGIN, SET_PASSWORD, SET_USER_NAME, SET_TITLE, SET_DESCRIPTION, SET_TASK_STATUS, SET_MODEL_ADD, SET_MODEL_LOADING, SET_TASK_ID, SET_PAGES, SET_CURRENT_PAGE, SET_NAME, SET_DEADLINE } from "./actionType";
 
 const initialstate = {
     login:true,
@@ -9,6 +9,7 @@ const initialstate = {
     url:"",
     title:"",
     description:"",
+    deadline:"",
     taskStatus:false,
     addModel:true,
     modelLoading:false,
@@ -50,6 +51,9 @@ export const reducer = (state=initialstate,{type,payload})=>{
             
         case SET_DESCRIPTION :
             return {...state,description:payload};
+        
+        case SET_DEADLINE :
+            return {...state };    
         
         case SET_TASK_STATUS :
             return {...state,taskStatus:payload}; 

@@ -8,6 +8,7 @@ export const SET_URL = "SET_URL";
 export const SET_ERROR="SET_ERROR";
 export const SET_TITLE="SET_TITLE";
 export const SET_DESCRIPTION="SET_DESCRIPTION";
+export const SET_DEADLINE="SET_DEADLINE";
 export const SET_TASK_STATUS="SET_TASK_STATUS";
 export const SET_MODEL_ADD="SET_MODEL_ADD";
 export const SET_MODEL_LOADING="SET_MODEL_LOADING";

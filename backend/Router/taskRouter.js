@@ -51,6 +51,7 @@ taskRouter.post("/post",async(req,res)=>{
             description,
             createdAt: dateTime,
             status,
+            deadline,
             userId: id
         });
         await setTask.save();
@@ -64,13 +65,14 @@ taskRouter.post("/post",async(req,res)=>{
 
 taskRouter.put("/update/:taskId", async (req, res) => {
     const { taskId } = req.params;
-    const { title, description, status } = req.body;
+    const { title, description, status, deadline } = req.body;
     try {
         const dateTime=new Date();
         const task = await taskModel.findByIdAndUpdate(taskId, {
             title,
             description,
             status,
+            deadline,
             updatedAt: dateTime
         });
         return res.status(200).send({ message: "successfull" });

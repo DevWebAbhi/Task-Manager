@@ -46,6 +46,7 @@ import {
   SET_CURRENT_PAGE,
   SET_NAME,
   SET_DATA,
+  SET_DEADLINE,
 } from "../Redux/actionType";
 import DataCard from "./DataCard";
 import axiosInstance, { configureTokenAxios } from "../axiosInstance";
@@ -120,7 +121,7 @@ const Tasks = () => {
 
   async function handleAddTask() {
     try {
-      if (selector.title == "" || selector.description == "") {
+      if (selector.title == "" || selector.description == "" ||selector.deadline == "") {
         toast({
           title: `Fill all the fields`,
           position: "top-right",
@@ -141,6 +142,7 @@ const Tasks = () => {
       const setTask = await axiosInstance.post(`task/post`, {
         title: selector.title,
         description: selector.description,
+        deadline:selector.deadline,
         status: false,
       });
       console.log(setTask);
@@ -164,7 +166,7 @@ const Tasks = () => {
 
   async function handleEdit() {
     try {
-      if (selector.title == "" || selector.description == "") {
+      if (selector.title == "" || selector.description == "" || selector.deadline == "") {
         toast({
           title: `Fill all the fields`,
           position: "top-right",
@@ -179,6 +181,7 @@ const Tasks = () => {
           title: selector.title,
           description: selector.description,
           status: selector.taskStatus,
+          deadline:selector.deadline
         }
       );
       dispatch({ type: SET_MODEL_LOADING, payload: false });
@@ -689,6 +692,15 @@ function BasicUsage({
                   dispatch({ type: SET_DESCRIPTION, payload: e.target.value })
                 }
                 placeholder="Description"
+              />
+              <FormLabel>Deadline</FormLabel>
+              <Input
+                type="dateTime"
+                value={!selector.addModel ? selector.deadline : null}
+                onChange={(e) =>
+                  dispatch({ type: SET_DEADLINE, payload: e.target.value })
+                }
+                placeholder="Deadline"
               />
               <FormLabel display={selector.addModel ? "none" : "flex"}>
                 Status
