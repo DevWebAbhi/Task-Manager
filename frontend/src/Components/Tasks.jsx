@@ -695,7 +695,7 @@ function BasicUsage({
               />
               <FormLabel>Deadline</FormLabel>
               <Input
-                type="dateTime"
+                type="datetime-local"
                 value={!selector.addModel ? selector.deadline : null}
                 onChange={(e) =>
                   dispatch({ type: SET_DEADLINE, payload: e.target.value })
