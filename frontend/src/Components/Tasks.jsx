@@ -700,8 +700,10 @@ function BasicUsage({
                 onChange={(e) =>
                   dispatch({ type: SET_DEADLINE, payload: e.target.value })
                 }
+                step="3600" 
                 placeholder="Deadline"
               />
+
               <FormLabel display={selector.addModel ? "none" : "flex"}>
                 Status
               </FormLabel>
