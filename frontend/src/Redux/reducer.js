@@ -53,7 +53,7 @@ export const reducer = (state=initialstate,{type,payload})=>{
             return {...state,description:payload};
         
         case SET_DEADLINE :
-            return {...state };    
+            return {...state , deadline:payload};    
         
         case SET_TASK_STATUS :
             return {...state,taskStatus:payload}; 

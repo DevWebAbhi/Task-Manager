@@ -698,8 +698,7 @@ function BasicUsage({
                 type="datetime-local"
                 value={!selector.addModel ? selector.deadline : null}
                 onChange={(e) =>
-                  {console.log(e.target.value);
-                  dispatch({ type: SET_DEADLINE, payload: e.target.value });}
+                  dispatch({ type: SET_DEADLINE, payload: e.target.value })
                 }
                 step="3600" 
                 placeholder="Deadline"
