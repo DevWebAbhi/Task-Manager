@@ -41,7 +41,7 @@ taskRouter.get("/tasks", async (req, res) => {
 });
 
 taskRouter.post("/post",async(req,res)=>{
-    const {id,title,description,status} = req.body;
+    const {id,title,description,status,deadline} = req.body;
     console.log(id,title,description,status)
     try {
         const dateTime=new Date();
@@ -61,6 +61,8 @@ taskRouter.post("/post",async(req,res)=>{
         return res.status(500).send({ message: "internal server error" });
     }
 });
+
+
 
 
 taskRouter.put("/update/:taskId", async (req, res) => {
