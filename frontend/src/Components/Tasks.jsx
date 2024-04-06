@@ -214,6 +214,7 @@ const Tasks = () => {
       dispatch({ type: SET_MODEL_ADD, payload: false });
       dispatch({ type: SET_TASK_STATUS, payload: taskData.status });
       dispatch({ type: SET_DESCRIPTION, payload: taskData.description });
+      dispatch({ type: SET_DEADLINE, payload: taskData.deadline });
       dispatch({ type: SET_TASK_ID, payload: dataId });
       openModel();
     } catch (error) {
