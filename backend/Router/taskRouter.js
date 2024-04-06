@@ -20,7 +20,7 @@ taskRouter.post("/post", async (req, res) => {
         const deadlineDate = new Date(deadline);
 
         // Apply the offset to the deadline
-        const deadlineWithOffset = new Date(deadlineDate.getTime() + offsetMilliseconds);
+        const deadlineWithOffset = new Date(deadlineDate.getTime());
 
         // Check if the deadline is at least 10 minutes in the future
         if (deadlineWithOffset.getTime() - now.getTime() < 10 * 60 * 1000) {
@@ -73,7 +73,7 @@ taskRouter.put("/update/:taskId", async (req, res) => {
         const deadlineDate = new Date(deadline);
 
         // Apply the offset to the deadline
-        const deadlineWithOffset = new Date(deadlineDate.getTime() + offsetMilliseconds);
+        const deadlineWithOffset = new Date(deadlineDate.getTime());
 
         // Check if the deadline is at least 10 minutes in the future
         if (deadlineWithOffset.getTime() - now.getTime() < 10 * 60 * 1000) {
