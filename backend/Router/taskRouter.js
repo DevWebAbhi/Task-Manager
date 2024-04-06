@@ -1,5 +1,5 @@
 const express = require("express");
-const dayjs = require('dayjs');
+const moment = require('moment');
 
 const taskModel = require("../Model/taskModel");
 
@@ -20,12 +20,12 @@ taskRouter.post("/post", async (req, res) => {
         });
         await setTask.save();
 
-        const timeDiff = dayjs(setTask.deadline).subtract(5, 'minutes').diff(dayjs(), 'milliseconds');
+        const timeDiff = moment(setTask.deadline).subtract(5, 'minutes').diff(moment(), 'milliseconds');
         setTask.timeout = setTimeout(() => {
             console.log(`Deadline reached for task: ${title}`);
         }, timeDiff);
 
-        return res.status(200).send({ message: "successfull" });
+        return res.status(200).send({ message: "successful" });
     } catch (error) {
         console.log(error);
         return res.status(500).send({ message: "internal server error" });
@@ -50,7 +50,7 @@ taskRouter.put("/update/:taskId", async (req, res) => {
             clearTimeout(updatedTask.timeout);
         }
 
-        const timeDiff = dayjs(updatedTask.deadline).subtract(5, 'minutes').diff(dayjs(), 'milliseconds');
+        const timeDiff = moment(updatedTask.deadline).subtract(5, 'minutes').diff(moment(), 'milliseconds');
         updatedTask.timeout = setTimeout(() => {
             console.log(`Updated deadline reached for task: ${title}`);
         }, timeDiff);
@@ -66,7 +66,7 @@ taskRouter.delete("/delete/:taskId", async (req, res) => {
     const { taskId } = req.params;
     try {
         await taskModel.findByIdAndDelete(taskId);
-        return res.status(200).send({ message: "successfull" });
+        return res.status(200).send({ message: "successful" });
     } catch (error) {
         return res.status(500).send({ message: "internal server error" });
     }
@@ -102,7 +102,7 @@ taskRouter.get("/tasks", async (req, res) => {
     try {
         const totalCount = await taskModel.countDocuments(query);
         const tasks = await taskModel.find(query).skip(skip).limit(limit);
-        return res.status(200).send({ message: "successfull", tasks: tasks, page: totalCount > limit ? Math.ceil(totalCount / limit) : 1 });
+        return res.status(200).send({ message: "successful", tasks: tasks, page: totalCount > limit ? Math.ceil(totalCount / limit) : 1 });
     } catch (error) {
         return res.status(500).send({ message: "internal server error" });
     }
