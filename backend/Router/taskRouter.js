@@ -20,11 +20,17 @@ taskRouter.post("/post", async (req, res) => {
         });
         await setTask.save();
 
-        const timeDiff = moment(setTask.deadline).subtract(5, 'minutes').diff(moment(), 'milliseconds');
-        console.log(timeDiff)
-        setTask.timeout = setTimeout(() => {
-            console.log(`Deadline reached for task: ${title}`);
-        }, timeDiff);
+        const now = moment();
+        const deadlineMoment = moment(setTask.deadline);
+
+        if (deadlineMoment.isAfter(now)) {
+            const timeDiff = deadlineMoment.subtract(5, 'minutes').diff(now, 'milliseconds');
+            setTask.timeout = setTimeout(() => {
+                console.log(`Deadline reached for task: ${title}`);
+            }, timeDiff);
+        } else {
+            console.log('Deadline has already passed.');
+        }
 
         return res.status(200).send({ message: "successful" });
     } catch (error) {
@@ -51,11 +57,17 @@ taskRouter.put("/update/:taskId", async (req, res) => {
             clearTimeout(updatedTask.timeout);
         }
 
-        const timeDiff = moment(updatedTask.deadline).subtract(5, 'minutes').diff(moment(), 'milliseconds');
-        console.log(timeDiff)
-        updatedTask.timeout = setTimeout(() => {
-            console.log(`Updated deadline reached for task: ${title}`);
-        }, timeDiff);
+        const now = moment();
+        const deadlineMoment = moment(updatedTask.deadline);
+
+        if (deadlineMoment.isAfter(now)) {
+            const timeDiff = deadlineMoment.subtract(5, 'minutes').diff(now, 'milliseconds');
+            updatedTask.timeout = setTimeout(() => {
+                console.log(`Updated deadline reached for task: ${title}`);
+            }, timeDiff);
+        } else {
+            console.log('Deadline has already passed.');
+        }
 
         return res.status(200).send({ message: "Successfully updated task" });
     } catch (error) {
