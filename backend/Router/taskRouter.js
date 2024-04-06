@@ -21,6 +21,7 @@ taskRouter.post("/post", async (req, res) => {
         await setTask.save();
 
         const timeDiff = moment(setTask.deadline).subtract(5, 'minutes').diff(moment(), 'milliseconds');
+        console.log(timeDiff)
         setTask.timeout = setTimeout(() => {
             console.log(`Deadline reached for task: ${title}`);
         }, timeDiff);
@@ -51,6 +52,7 @@ taskRouter.put("/update/:taskId", async (req, res) => {
         }
 
         const timeDiff = moment(updatedTask.deadline).subtract(5, 'minutes').diff(moment(), 'milliseconds');
+        console.log(timeDiff)
         updatedTask.timeout = setTimeout(() => {
             console.log(`Updated deadline reached for task: ${title}`);
         }, timeDiff);
