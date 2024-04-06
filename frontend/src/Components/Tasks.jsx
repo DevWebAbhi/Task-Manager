@@ -146,6 +146,15 @@ const Tasks = () => {
         status: false,
       });
       console.log(setTask);
+      if(setTask.data.message=="Deadline should be at least 10 minutes in the future"){
+        toast({
+          title: `Deadline should be more than 10 minutes`,
+          position: "top-right",
+          isClosable: true,
+        });
+        dispatch({ type: SET_MODEL_LOADING, payload: false });
+        return;
+      }
       dispatch({ type: SET_MODEL_LOADING, payload: false });
       toast({
         title: `Posted Successfully`,
@@ -184,6 +193,16 @@ const Tasks = () => {
           deadline:selector.deadline
         }
       );
+      console.log(setTask);
+      if(setTask.data.message=="Deadline should be at least 10 minutes in the future"){
+        toast({
+          title: `Deadline should be more than 10 minutes`,
+          position: "top-right",
+          isClosable: true,
+        });
+        dispatch({ type: SET_MODEL_LOADING, payload: false });
+        return;
+      }
       dispatch({ type: SET_MODEL_LOADING, payload: false });
       toast({
         title: `Posted Successfully`,

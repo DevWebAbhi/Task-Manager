@@ -1,36 +1,52 @@
 const express = require("express");
-const moment = require('moment');
-
 const taskModel = require("../Model/taskModel");
-
+const taskAlertMailer = require("../taskAlertMailer");
 const taskRouter = express.Router();
 
 taskRouter.post("/post", async (req, res) => {
-    const { id, title, description, status, deadline } = req.body;
-
+    const { id, title, description, status, deadline, email } = req.body;
+    console.log(email)
     try {
-        const dateTime = new Date();
+        // Get the current timezone offset in minutes
+        const offset = 330;
+        
+        // Convert the offset to milliseconds
+        const offsetMilliseconds = offset * 60 * 1000;
+
+        // Get the current time adjusted for the offset
+        const now = new Date(Date.now() + offsetMilliseconds);
+
+        // Convert the deadline to a Date object
+        const deadlineDate = new Date(deadline);
+
+        // Apply the offset to the deadline
+        const deadlineWithOffset = new Date(deadlineDate.getTime() + offsetMilliseconds);
+
+        // Check if the deadline is at least 10 minutes in the future
+        if (deadlineWithOffset.getTime() - now.getTime() < 10 * 60 * 1000) {
+            return res.status(200).send({ message: "Deadline should be at least 10 minutes in the future" });
+        }
+
         const setTask = await taskModel({
             title,
             description,
-            createdAt: dateTime,
+            createdAt: now,
             status,
-            deadline,
+            deadline: deadlineWithOffset,
             userId: id
         });
         await setTask.save();
 
-        const now = moment();
-        const deadlineMoment = moment(setTask.deadline);
-            console.log(deadline,setTask.deadline)
-        if (deadlineMoment.isAfter(now)) {
-            const timeDiff = deadlineMoment.subtract(5, 'minutes').diff(now, 'milliseconds');
-            setTask.timeout = setTimeout(() => {
-                console.log(`Deadline reached for task: ${title}`);
-            }, timeDiff);
-        } else {
-            console.log('Deadline has already passed.');
-        }
+        console.log('Task created at:', now);
+        console.log('Deadline:', deadlineWithOffset);
+
+        // Calculate the time difference for the timeout
+        const timeDiff = deadlineWithOffset.getTime() - now.getTime() - 5 * 60 * 1000; // Adjust for 5 minutes before deadline
+
+        setTask.timeout = setTimeout(async() => {
+            console.log(`Deadline reached for task: ${title} ${email}`);
+            await taskAlertMailer(email,title,description);
+        }, timeDiff);
 
         return res.status(200).send({ message: "successful" });
     } catch (error) {
@@ -41,33 +57,51 @@ taskRouter.post("/post", async (req, res) => {
 
 taskRouter.put("/update/:taskId", async (req, res) => {
     const { taskId } = req.params;
-    const { title, description, status, deadline } = req.body;
+    const { title, description, status, deadline, email } = req.body;
 
     try {
-        const dateTime = new Date();
+        // Get the current timezone offset in minutes
+        const offset = new Date().getTimezoneOffset();
+        
+        // Convert the offset to milliseconds
+        const offsetMilliseconds = offset * 60 * 1000;
+
+        // Get the current time adjusted for the offset
+        const now = new Date(Date.now() + offsetMilliseconds);
+
+        // Convert the deadline to a Date object
+        const deadlineDate = new Date(deadline);
+
+        // Apply the offset to the deadline
+        const deadlineWithOffset = new Date(deadlineDate.getTime() + offsetMilliseconds);
+
+        // Check if the deadline is at least 10 minutes in the future
+        if (deadlineWithOffset.getTime() - now.getTime() < 10 * 60 * 1000) {
+            return res.status(200).send({ message: "Deadline should be at least 10 minutes in the future" });
+        }
+
         const updatedTask = await taskModel.findByIdAndUpdate(taskId, {
             title,
             description,
             status,
-            deadline,
-            updatedAt: dateTime
+            deadline: deadlineWithOffset,
+            updatedAt: now 
         });
+
+        console.log('Task updated at:', now);
+        console.log('Updated deadline:', deadlineWithOffset);
 
         if (updatedTask.timeout) {
             clearTimeout(updatedTask.timeout);
         }
 
-        const now = moment();
-        const deadlineMoment = moment(updatedTask.deadline);
-        console.log(deadline,setTask.deadline)
-        if (deadlineMoment.isAfter(now)) {
-            const timeDiff = deadlineMoment.subtract(5, 'minutes').diff(now, 'milliseconds');
-            updatedTask.timeout = setTimeout(() => {
-                console.log(`Updated deadline reached for task: ${title}`);
-            }, timeDiff);
-        } else {
-            console.log('Deadline has already passed.');
-        }
+        // Calculate the time difference for the timeout
+        const timeDiff = deadlineWithOffset.getTime() - now.getTime() - 5 * 60 * 1000; // Adjust for 5 minutes before deadline
+
+        updatedTask.timeout = setTimeout(async() => {
+            console.log(`Updated deadline reached for task: ${title}`);
+            await taskAlertMailer(email,title,description);
+        }, timeDiff);
 
         return res.status(200).send({ message: "Successfully updated task" });
     } catch (error) {

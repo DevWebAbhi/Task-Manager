@@ -74,9 +74,10 @@ async function authentication(req,res,next){
          if(token){
             const tokenDecoded = jwt.verify(token, JWT_PASSWORD);
             if(tokenDecoded.userId){
-                const check = userModel.findOne({_id:tokenDecoded.userId});
+                const check =await userModel.findById(tokenDecoded.userId);
                 if(check){
                     req.body["id"]=tokenDecoded.userId;
+                    req.body["email"]=check.email;
                     next();
                 }else{
                     return res.status(401).send({message:"unauthorized access"});
