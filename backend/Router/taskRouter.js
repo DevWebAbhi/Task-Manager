@@ -61,7 +61,7 @@ taskRouter.put("/update/:taskId", async (req, res) => {
 
     try {
         // Get the current timezone offset in minutes
-        const offset = new Date().getTimezoneOffset();
+        const offset = 330;
         
         // Convert the offset to milliseconds
         const offsetMilliseconds = offset * 60 * 1000;

@@ -60,7 +60,7 @@ const DataCard = ({ Data, idx, dataEdit }) => {
       width={isSmallerThan400 ? "12rem" : "17.9rem"}
       padding={"1rem"}
       boxSizing="border-box"
-      height={!isSmallerThan400 ? "17.9rem":"20rem"}
+      height={!isSmallerThan400 ? "17.9rem":"21.5rem"}
       background={
         idx % 6 == 0
           ? colorCodes.six

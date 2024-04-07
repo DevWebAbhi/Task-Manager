@@ -227,13 +227,12 @@ const Tasks = () => {
 
   async function dataEdit(dataId, idx) {
     try {
-      console.log(dataId, idx);
       const taskData = selector.data[idx - 1];
       dispatch({ type: SET_TITLE, payload: taskData.title });
       dispatch({ type: SET_MODEL_ADD, payload: false });
       dispatch({ type: SET_TASK_STATUS, payload: taskData.status });
       dispatch({ type: SET_DESCRIPTION, payload: taskData.description });
-      dispatch({ type: SET_DEADLINE, payload: taskData.deadline });
+      dispatch({ type: SET_DEADLINE, payload: taskData.deadline.substr(0,19) });
       dispatch({ type: SET_TASK_ID, payload: dataId });
       openModel();
     } catch (error) {
@@ -335,7 +334,7 @@ const Tasks = () => {
                   >
                     <AddIcon marginTop={"-1.5rem"} color="white" />
                   </Button>
-                  <Input placeholder="Select Date and Time" type="date"
+                  <Input placeholder="Select Date" type="date"
           fontSize={"small"} 
           display={"block"}
           margin={"auto"}
@@ -350,7 +349,7 @@ const Tasks = () => {
             }
           }
           marginTop={"1.5rem"} width={isSmallerThan500 ? "6rem" : "7.9rem"} />
-          <Input placeholder="Select Date and Time" type="date"
+          <Input placeholder="Select Date" type="date"
           fontSize={"small"} 
           display={"block"}
           margin={"auto"}
@@ -612,32 +611,32 @@ const Tasks = () => {
               >
                 <Skeleton
                   width={isSmallerThan400 ? "12rem" : "17.9rem"}
-                  height={!isSmallerThan400 ? "17.9rem" : "20rem"}
+                  height={!isSmallerThan400 ? "17.9rem" : "21.5rem"}
                   borderRadius={"1rem"}
                 />
                 <Skeleton
                   width={isSmallerThan400 ? "12rem" : "17.9rem"}
-                  height={!isSmallerThan400 ? "17.9rem" : "20rem"}
+                  height={!isSmallerThan400 ? "17.9rem" : "21.5rem"}
                   borderRadius={"1rem"}
                 />
                 <Skeleton
                   width={isSmallerThan400 ? "12rem" : "17.9rem"}
-                  height={!isSmallerThan400 ? "17.9rem" : "20rem"}
+                  height={!isSmallerThan400 ? "17.9rem" : "21.5rem"}
                   borderRadius={"1rem"}
                 />
                 <Skeleton
                   width={isSmallerThan400 ? "12rem" : "17.9rem"}
-                  height={!isSmallerThan400 ? "17.9rem" : "20rem"}
+                  height={!isSmallerThan400 ? "17.9rem" : "21.5rem"}
                   borderRadius={"1rem"}
                 />
                 <Skeleton
                   width={isSmallerThan400 ? "12rem" : "17.9rem"}
-                  height={!isSmallerThan400 ? "17.9rem" : "20rem"}
+                  height={!isSmallerThan400 ? "17.9rem" : "21.5rem"}
                   borderRadius={"1rem"}
                 />
                 <Skeleton
                   width={isSmallerThan400 ? "12rem" : "17.9rem"}
-                  height={!isSmallerThan400 ? "17.9rem" : "20rem"}
+                  height={!isSmallerThan400 ? "17.9rem" : "21.5rem"}
                   borderRadius={"1rem"}
                 />
               </Box>
