@@ -1,6 +1,6 @@
 # Task-Manager
 
-TaskMaster is a versatile task management application designed to help individuals and teams organize, prioritize, and track their tasks efficiently.
+Task Manager is a versatile task management application designed to help individuals and teams organize, prioritize, and track their tasks efficiently.
 
 ## Features
 
@@ -12,6 +12,7 @@ TaskMaster is a versatile task management application designed to help individua
 - **Customizable Task Views**: Customize task views based on priority, deadline, or any other criteria to suit individual preferences.
 - **Secure Data Management**: Ensures the confidentiality and security of task data with robust data management protocols.
 - **Login/Signup Authentication**: Users can create accounts, log in, and securely access their tasks with authentication features.
+- **Email-Remainder**: User gets remainder before 5 minute of deadline.
 
 
 ## Screenshots
@@ -20,7 +21,6 @@ TaskMaster is a versatile task management application designed to help individua
    <img src="./AssetsReadme/s2.JPG"/>
    <img src="./AssetsReadme/s3.JPG"/>
    <img src="./AssetsReadme/s4.JPG"/>
-   <img src="./AssetsReadme/s5.JPG"/>
    <img src="./AssetsReadme/s6.JPG"/>
 
 ## Frontend
@@ -36,6 +36,7 @@ TaskMaster is a versatile task management application designed to help individua
 - **Responsive Pagination**: Pagination component for navigating through lists of tasks on different devices.
 - **useSearchParams**
 - **Responsive For Multiple Screens**
+- **Nodemailer**
 ### Folder Structure
 
 ```
@@ -91,7 +92,7 @@ backend/
 
 ## Frontend Deplyed Link
 
-- https://task-manager-mu-ten.vercel.app/tasks?page=1
+- https://task-manager-mu-ten.vercel.app/
 
 ## Backend Deployed Link
 
