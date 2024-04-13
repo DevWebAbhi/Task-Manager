@@ -123,7 +123,7 @@ taskRouter.delete("/delete/:taskId", async (req, res) => {
 taskRouter.get("/tasks", async (req, res) => {
     const { id } = req.body;
     const { page = 1, startDate, endDate, status, q } = req.query;
-    const limit = 8;
+    const limit = 6;
     const skip = (page - 1) * limit;
     const query = { userId: id };
     if (startDate && endDate) {
